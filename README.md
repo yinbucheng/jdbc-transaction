@@ -1,0 +1,2 @@
+# jdbc-transaction
+使用c3p0进行自定义事务控制，主要是利用ThreadLocal何proxy来实现的控制
