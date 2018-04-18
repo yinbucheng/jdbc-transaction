@@ -49,9 +49,16 @@ public class BasicFactory {
            T proxyService = (T) Proxy.newProxyInstance(BasicFactory.class.getClassLoader(), new Class[]{interfaceClazz}, new InvocationHandler() {
                 @Override
                 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                  tranactional tranactional =  method.getAnnotation(tranactional.class);
+                  //这里是获取接口上面方法是否存在制定注解
+                  Tranactional tranactional =  method.getAnnotation(Tranactional.class);
+                  //获取实现类上面的方法是否存在指定注解
+                  if(tranactional==null){
+                     Method m =  service.getClass().getMethod(method.getName(),method.getParameterTypes());
+                     tranactional = m.getAnnotation(Tranactional.class);
+                  }
                   if(tranactional!=null){
                       try{
+                          System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>开始事务。。。。。。");
                          TransactionManager.preparedTran();
                          Object resut = method.invoke(service,args);
                          TransactionManager.commit();
@@ -60,6 +67,7 @@ public class BasicFactory {
                         TransactionManager.rollBack();
                         throw new RuntimeException(e);
                       }finally {
+                          System.out.println(">>>>>>>>>>>>>>>>>>>>>>>结束事务");
                           TransactionManager.releaseResource();;
                       }
                   }else{
