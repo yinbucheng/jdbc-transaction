@@ -6,7 +6,13 @@ import cn.intellif.service.IUserService;
 
 public class MainTest {
     public static void main(String[] args) {
-       IUserService userService = BasicFactory.getInstance().getService(IUserService.class);
+        //saveTest();
+        IUserService userService = BasicFactory.getInstance().getService(IUserService.class);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>:"+userService.listAll());
+    }
+
+    private static void saveTest() {
+        IUserService userService = BasicFactory.getInstance().getService(IUserService.class);
         UserEntity entity = new UserEntity();
         entity.setAge(12);
         entity.setName("nice");
